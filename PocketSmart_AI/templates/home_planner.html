@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home Interior Planner
+{% endblock %}
+
+
+{% block content %}
+
+<div class="planner-header">
+
+    <span class="eyebrow">
+        HOME INTERIOR
+    </span>
+
+    <h1>
+        Home Interior Budget Planner
+    </h1>
+
+    <p>
+        Tell PocketSmart AI your budget,
+        room and requirements.
+    </p>
+
+</div>
+
+
+<div class="form-card">
+
+    <form id="plannerForm">
+
+        <label>
+            Total Budget (INR)
+
+            <input
+                name="budget"
+                type="number"
+                min="1"
+                placeholder="50000"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Room Type
+
+            <input
+                name="room_type"
+                type="text"
+                placeholder="Living Room"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Interior Style
+
+            <select name="style">
+
+                <option>
+                    Modern
+                </option>
+
+                <option>
+                    Minimalist
+                </option>
+
+                <option>
+                    Traditional
+                </option>
+
+                <option>
+                    Luxury
+                </option>
+
+                <option>
+                    Scandinavian
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <h3>
+            Required Items
+        </h3>
+
+
+        <div id="items">
+
+            <div class="item-row">
+
+                <input
+                    name="category"
+                    value="Lighting"
+                    placeholder="Lighting"
+                    required
+                >
+
+                <input
+                    name="quantity"
+                    type="number"
+                    value="1"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn secondary"
+            onclick="addHomeItem()"
+        >
+            + Add Item
+        </button>
+
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Generate Home Plan
+        </button>
+
+    </form>
+
+</div>
+
+
+<div
+    id="loading"
+    class="notice"
+    hidden
+>
+    Generating your plan...
+</div>
+
+
+<div
+    id="error"
+    class="error"
+></div>
+
+
+<div id="result"></div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+function addHomeItem() {
+
+    const container =
+        document.querySelector(
+            "#items"
+        );
+
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "item-row";
+
+
+    row.innerHTML = `
+
+        <input
+            name="category"
+            placeholder="Furniture"
+            required
+        >
+
+        <input
+            name="quantity"
+            type="number"
+            value="1"
+            min="1"
+            required
+        >
+
+    `;
+
+
+    container.appendChild(row);
+}
+
+
+document
+    .querySelector("#plannerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const form =
+                new FormData(
+                    event.target
+                );
+
+
+            const categories =
+                document.querySelectorAll(
+                    '[name="category"]'
+                );
+
+
+            const quantities =
+                document.querySelectorAll(
+                    '[name="quantity"]'
+                );
+
+
+            const items = [];
+
+
+            categories.forEach(
+                (
+                    category,
+                    index
+                ) => {
+
+                    items.push({
+
+                        category:
+                            category.value,
+
+                        quantity:
+                            Number(
+                                quantities[
+                                    index
+                                ].value
+                            )
+
+                    });
+
+                }
+            );
+
+
+            const body = {
+
+                budget:
+                    Number(
+                        form.get(
+                            "budget"
+                        )
+                    ),
+
+                room_type:
+                    form.get(
+                        "room_type"
+                    ),
+
+                style:
+                    form.get(
+                        "style"
+                    ),
+
+                items
+
+            };
+
+
+            await runPlanner(
+                "/generate-home",
+                body
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

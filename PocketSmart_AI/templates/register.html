@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register · PocketSmart AI
+{% endblock %}
+
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>
+        Create Your Account
+    </h1>
+
+    <p class="muted">
+        Create an account to save
+        your recommendation history.
+    </p>
+
+
+    <form id="registerForm">
+
+        <label>
+            Full Name
+
+            <input
+                name="full_name"
+                type="text"
+                placeholder="Your name"
+                minlength="2"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Email
+
+            <input
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Password
+
+            <input
+                name="password"
+                type="password"
+                minlength="8"
+                placeholder="At least 8 characters"
+                required
+            >
+
+        </label>
+
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Create Account
+        </button>
+
+
+        <p
+            id="message"
+            class="error"
+        ></p>
+
+    </form>
+
+
+    <p>
+
+        Already have an account?
+
+        <a href="/login">
+            Login
+        </a>
+
+    </p>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+document
+    .querySelector("#registerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const form =
+                new FormData(event.target);
+
+            const data =
+                Object.fromEntries(form);
+
+            const response =
+                await api(
+                    "/register",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(data)
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (response.ok) {
+
+                window.location =
+                    "/login";
+
+            } else {
+
+                document
+                    .querySelector("#message")
+                    .textContent =
+                    result.detail ||
+                    "Registration failed.";
+
+            }
+
+        }
+    );
+
+</script>
+
+{% endblock %}

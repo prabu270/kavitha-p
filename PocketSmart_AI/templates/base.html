@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        PocketSmart AI
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/static/css/style.css"
+    >
+
+</head>
+
+<body>
+
+<header class="nav">
+
+    <a
+        class="brand"
+        href="/"
+    >
+        PocketSmart AI
+    </a>
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/planner/home">
+            Home Planner
+        </a>
+
+        <a href="/planner/party">
+            Party Planner
+        </a>
+
+        <a href="/planner/jewelry">
+            Jewelry Planner
+        </a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/login">
+            Login
+        </a>
+
+        <button
+            id="logoutBtn"
+            class="link-button"
+        >
+            Logout
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 PocketSmart AI
+    </p>
+
+    <p>
+        AI-powered budget planning with transparent estimates.
+    </p>
+
+</footer>
+
+
+<script src="/static/js/app.js"></script>
+
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+
+</html>

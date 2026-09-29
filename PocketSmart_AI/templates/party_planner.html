@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}
+Party Budget Planner
+{% endblock %}
+
+
+{% block content %}
+
+<div class="planner-header">
+
+    <span class="eyebrow">
+        PARTY PLANNER
+    </span>
+
+    <h1>
+        Party Budget Planner
+    </h1>
+
+    <p>
+        Plan your event according to
+        your budget and guest count.
+    </p>
+
+</div>
+
+
+<div class="form-card">
+
+    <form id="plannerForm">
+
+        <label>
+            Total Budget (INR)
+
+            <input
+                name="budget"
+                type="number"
+                min="1"
+                placeholder="30000"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Number of Guests
+
+            <input
+                name="guest_count"
+                type="number"
+                min="1"
+                placeholder="50"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Event Type
+
+            <select name="event_type">
+
+                <option>
+                    Birthday
+                </option>
+
+                <option>
+                    Wedding
+                </option>
+
+                <option>
+                    Corporate
+                </option>
+
+                <option>
+                    Anniversary
+                </option>
+
+                <option>
+                    Family Event
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Venue
+
+            <input
+                name="venue"
+                value="Flexible"
+                placeholder="Community Hall"
+            >
+
+        </label>
+
+
+        <label>
+            City
+
+            <input
+                name="city"
+                value="India"
+                placeholder="Coimbatore"
+            >
+
+        </label>
+
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Generate Party Plan
+        </button>
+
+    </form>
+
+</div>
+
+
+<div
+    id="loading"
+    class="notice"
+    hidden
+>
+    Planning your event...
+</div>
+
+
+<div
+    id="error"
+    class="error"
+></div>
+
+
+<div id="result"></div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+document
+    .querySelector("#plannerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const form =
+                new FormData(
+                    event.target
+                );
+
+
+            const body = {
+
+                budget:
+                    Number(
+                        form.get(
+                            "budget"
+                        )
+                    ),
+
+                guest_count:
+                    Number(
+                        form.get(
+                            "guest_count"
+                        )
+                    ),
+
+                event_type:
+                    form.get(
+                        "event_type"
+                    ),
+
+                venue:
+                    form.get(
+                        "venue"
+                    ),
+
+                city:
+                    form.get(
+                        "city"
+                    )
+
+            };
+
+
+            await runPlanner(
+                "/generate-party",
+                body
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

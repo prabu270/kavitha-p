@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard · PocketSmart AI
+{% endblock %}
+
+
+{% block content %}
+
+<section>
+
+    <h1 id="welcome">
+        Dashboard
+    </h1>
+
+    <p class="muted">
+        Your PocketSmart AI planning center.
+    </p>
+
+</section>
+
+
+<section class="grid three">
+
+    <a
+        class="card"
+        href="/planner/home"
+    >
+
+        <h2>
+            🏠 Home
+        </h2>
+
+        <p>
+            Interior budget planning
+        </p>
+
+    </a>
+
+
+    <a
+        class="card"
+        href="/planner/party"
+    >
+
+        <h2>
+            🎉 Party
+        </h2>
+
+        <p>
+            Event budget planning
+        </p>
+
+    </a>
+
+
+    <a
+        class="card"
+        href="/planner/jewelry"
+    >
+
+        <h2>
+            💎 Jewelry
+        </h2>
+
+        <p>
+            Occasion-based styling
+        </p>
+
+    </a>
+
+</section>
+
+
+<section class="history-section">
+
+    <h2>
+        Recommendation History
+    </h2>
+
+    <div id="history">
+
+        Loading...
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+async function loadDashboard() {
+
+    const session =
+        await api(
+            "/session-info"
+        );
+
+    if (!session.ok) {
+
+        window.location =
+            "/login";
+
+        return;
+    }
+
+
+    const user =
+        await session.json();
+
+
+    document
+        .querySelector("#welcome")
+        .textContent =
+        `Welcome, ${user.full_name}`;
+
+
+    const response =
+        await api(
+            "/history"
+        );
+
+
+    if (!response.ok) {
+
+        return;
+    }
+
+
+    const records =
+        await response.json();
+
+
+    const history =
+        document.querySelector(
+            "#history"
+        );
+
+
+    if (!records.length) {
+
+        history.innerHTML =
+            `<div class="empty">
+                No recommendations yet.
+             </div>`;
+
+        return;
+    }
+
+
+    history.innerHTML =
+        records
+            .map(
+                record => `
+
+                <div class="history">
+
+                    <strong>
+                        ${escapeHtml(
+                            record.planner
+                        )}
+                    </strong>
+
+                    <span>
+                        ₹${Number(
+                            record.budget
+                        ).toLocaleString()}
+                    </span>
+
+                    <small>
+                        ${new Date(
+                            record.created_at
+                        ).toLocaleString()}
+                    </small>
+
+                    <p>
+                        ${escapeHtml(
+                            record.summary
+                        )}
+                    </p>
+
+                    <a
+                        href="/recommendations-details/${record.id}"
+                        target="_blank"
+                    >
+                        View details
+                    </a>
+
+                </div>
+
+                `
+            )
+            .join("");
+
+}
+
+
+loadDashboard();
+
+</script>
+
+{% endblock %}

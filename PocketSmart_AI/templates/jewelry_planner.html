@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}
+Jewelry Planner
+{% endblock %}
+
+
+{% block content %}
+
+<div class="planner-header">
+
+    <span class="eyebrow">
+        JEWELRY STYLIST
+    </span>
+
+    <h1>
+        Jewelry Budget Planner
+    </h1>
+
+    <p>
+        Find jewelry ideas based on
+        your occasion, style and outfit.
+    </p>
+
+</div>
+
+
+<div class="form-card">
+
+    <form
+        id="plannerForm"
+        enctype="multipart/form-data"
+    >
+
+        <label>
+            Budget (INR)
+
+            <input
+                name="budget"
+                type="number"
+                min="1"
+                placeholder="10000"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Occasion
+
+            <input
+                name="occasion"
+                placeholder="Wedding"
+                required
+            >
+
+        </label>
+
+
+        <label>
+            Style
+
+            <select name="style">
+
+                <option>
+                    Elegant
+                </option>
+
+                <option>
+                    Minimalist
+                </option>
+
+                <option>
+                    Traditional
+                </option>
+
+                <option>
+                    Modern
+                </option>
+
+                <option>
+                    Statement
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Outfit Color
+
+            <input
+                name="outfit_color"
+                placeholder="Pastel Pink"
+            >
+
+        </label>
+
+
+        <label>
+            Metal Preference
+
+            <select name="metal_preference">
+
+                <option>
+                    Any
+                </option>
+
+                <option>
+                    Gold
+                </option>
+
+                <option>
+                    Silver
+                </option>
+
+                <option>
+                    Rose Gold
+                </option>
+
+                <option>
+                    Gold-tone
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <label>
+            Optional Outfit Image
+
+            <input
+                name="outfit_image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+        </label>
+
+
+        <button
+            class="btn"
+            type="submit"
+        >
+            Generate Jewelry Recommendations
+        </button>
+
+    </form>
+
+</div>
+
+
+<div
+    id="loading"
+    class="notice"
+    hidden
+>
+    Analyzing your preferences...
+</div>
+
+
+<div
+    id="error"
+    class="error"
+></div>
+
+
+<div id="result"></div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+document
+    .querySelector("#plannerForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const form =
+                new FormData(
+                    event.target
+                );
+
+
+            await runPlanner(
+                "/generate-jewelry",
+                form
+            );
+
+        }
+    );
+
+</script>
+
+{% endblock %}

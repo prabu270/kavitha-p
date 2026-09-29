@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+PocketSmart AI
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div>
+
+        <span class="eyebrow">
+            SMART BUDGET + AI
+        </span>
+
+        <h1>
+            Plan more.
+            <br>
+            Overspend less.
+        </h1>
+
+        <p>
+            PocketSmart AI helps you plan
+            your home, party and jewelry
+            purchases according to your budget.
+        </p>
+
+        <div class="actions">
+
+            <a
+                class="btn"
+                href="/register"
+            >
+                Get Started
+            </a>
+
+            <a
+                class="btn secondary"
+                href="/login"
+            >
+                Sign In
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="grid three">
+
+    <a
+        class="card"
+        href="/planner/home"
+    >
+
+        <div class="card-icon">
+            🏠
+        </div>
+
+        <h2>
+            Home Planner
+        </h2>
+
+        <p>
+            Allocate your interior budget
+            across furniture, lighting,
+            cooling and decoration.
+        </p>
+
+    </a>
+
+
+    <a
+        class="card"
+        href="/planner/party"
+    >
+
+        <div class="card-icon">
+            🎉
+        </div>
+
+        <h2>
+            Party Planner
+        </h2>
+
+        <p>
+            Plan catering, venue,
+            decoration and entertainment
+            according to guest count.
+        </p>
+
+    </a>
+
+
+    <a
+        class="card"
+        href="/planner/jewelry"
+    >
+
+        <div class="card-icon">
+            💎
+        </div>
+
+        <h2>
+            Jewelry Planner
+        </h2>
+
+        <p>
+            Get occasion and outfit-aware
+            jewelry recommendations within
+            your budget.
+        </p>
+
+    </a>
+
+</section>
+
+{% endblock %}
